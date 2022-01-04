@@ -4,5 +4,4 @@
 .env
 
 
-#No NPM only yarn
-package.lock.json
+ 
