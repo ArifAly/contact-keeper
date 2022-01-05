@@ -47,7 +47,7 @@ async (req, res) => {
            email,
            phone,
            type,
-           user: req.user.id
+           user: req.user.id 
        });
        const contact = await newContact.save();
        res.json(contact);
@@ -63,16 +63,65 @@ async (req, res) => {
 //@description       Update contact
 //@acces             Private
 
-router.put('/:id', (req, res) => {
-    res.send('Update contact')
+router.put('/:id', auth, async (req, res) => {
+ const  {name, email, phone, type} = req.body;
+ //build Contact Object
+ const contactFields = {};
+ if (name) contactFields.name =name;
+ if (email) contactFields.email =email;
+ if (phone) contactFields.phone =phone;
+ if (type) contactFields.type =type;
+
+ try{
+ let contact = await Contact.findById(req.params.id);
+
+ if(!contact) return res.status(404).json({msg :'Contact not Found'});
+
+ //Make sure user  owns Contact         
+ if (contact.user.toString() !== req.user.id) {
+ return res.status(401).json({msg :'Not authorized'})
+
+ }
+  contact = await Contact.findByIdAndUpdate(req.params.id,
+  { $set: contactFields},
+  {new: true});
+
+  res.json(contact)
+  
+}  
+ catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error')
+ }
 });
 
 //@route             DELETE/api/contacts/:id
 //@description       Delete contact
 //@acces             Private
 
-router.delete('/:id', (req, res) => {
-    res.send('Delete contact')
+  router.delete('/:id', auth, async (req, res) => {
+    try{
+        let contact = await Contact.findById(req.params.id);
+       
+        if(!contact) return res.status(404).json({msg :'Contact not Found'});
+       
+        //Make sure user  owns Contact         
+        if (contact.user.toString() !== req.user.id) {
+        return res.status(401).json({msg :'Not authorized'})
+       
+        }
+        //  contact = await Contact.findByIdAndUpdate(req.params.id,
+        //  { $set: contactFields},
+        //  {new: true});
+        await Contact.findByIdAndRemove(req.params.id);
+       
+         res.json({msg : 'Contact Deleted'});
+         
+       }  
+        catch (err) {
+           console.error(err.message);
+           res.status(500).send('Server Error')
+        }
 });
 
 module.exports = router; 
