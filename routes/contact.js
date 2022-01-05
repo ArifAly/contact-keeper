@@ -1,5 +1,4 @@
 const  express =require ('express');
-const res = require('express/lib/response');
 const router = express.Router();
 const auth = require('./middlewar/auth');
 const { check, validationResult } = require('express-validator/check');
@@ -26,12 +25,14 @@ router.get('/', auth, async (req, res) => {
 //@description       Add new contact
 //@acces             Private
 
-router.post('/',auth,[
-
+router.post(
+'/',
+[auth,
+[
 check('name','Name is required')
 .not()
 .isEmpty()
-
+]
 ], 
 
 async (req, res) => {
@@ -47,7 +48,7 @@ async (req, res) => {
            phone,
            type,
            user: req.user.id
-       }) ;
+       });
        const contact = await newContact.save();
        res.json(contact);
 
