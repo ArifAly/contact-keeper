@@ -1,4 +1,4 @@
-import React, { useReducer}from 'react';
+import React, { useReducer }from 'react';
 import uuid from 'uuid';
 import ContactContext from './contactContext';
 import contactReducer from './contactReducer'; 
@@ -13,12 +13,12 @@ FILTER_CONTACTS,
 CLEAR_FILTER
 
 } from '../types';
-import contactContext from './contactContext';
+//import contactContext from './contactContext';
 
 const  ContactState = props => {
  
 const initilSatate = {
-    contact:
+    contacts:
      [
         {
             id: 1,
@@ -65,13 +65,12 @@ const  [ state, dispatch] = useReducer(contactReducer, initilSatate);
 //Clear Filter
 
 return  (
-<ContactContext.Provider>
-
+<ContactContext.Provider
     value ={
         {
             contacts : state.contacts
-        }}
- 
+        }}>
+        
         {props.children}
 </ContactContext.Provider>
 

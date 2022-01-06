@@ -7,7 +7,7 @@ export const Home = () => {
 
         <div>
 
-
+            {/*Contact Form*/ }
         </div>
         <div>
             <Contact/> 

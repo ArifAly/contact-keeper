@@ -237,6 +237,7 @@ img {
 .alert-primary {
   background: var(--primary-color);
   color: #fff;
+  border-radius: 40px;
 }
 
 .btn-light,
@@ -398,6 +399,12 @@ table th {
 .item-exit-active {
   opacity: 0;
   transition: opacity 1000ms ease-in;
+}
+
+.btn-new {
+  background: green;
+  color: #fff;
+  border-radius: 20px;
 }
 
 /* Mobile Styles */
